@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.Subsystems.Arm;
 import frc.robot.Subsystems.Intake;
 import frc.robot.Subsystems.Lights;
+import edu.wpi.first.wpilibj.Timer;
 
 public class IntakeCommand extends Command {
     private Arm arm;
@@ -27,24 +28,27 @@ public class IntakeCommand extends Command {
         lights = Constants.lights;
     }   
 
+    // crates timer object
+    public Timer timer = new timer();
+    
     @Override
     public void execute(){
-
-
         if(Constants.intake.intakeSensor.getVoltage()<.5) {
             triggered = true;
         }
-        
-        /*
-
-        CREATE THE INTAKE INSTRUCTIONS CODE HERE
-
-        Try to understand what the "triggered", "elapsed", "intakeSensor" and of course "intake" variables do. 
-        Check the constants class for other objects and variables used.
-        As a bonus activity if you finish, try to use the "lights" object in order to make the intake react to having a note inside.
-        
-        */
-        
+        // start the timer at 0, hopefuly
+        timer.start();
+        intake.run();
+        // while time is NOT 5 run intake
+        while(true){
+            if(timer.hasElapsed(5)){
+                intake.stop();
+                break;
+            }
+        }
+        //stop the timer and reset
+        timer.stop();
+        timer.reset();
         
     }
     @Override
