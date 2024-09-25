@@ -33,22 +33,21 @@ public class IntakeCommand extends Command {
     
     @Override
     public void execute(){
+        intake.run();
+        lights.setColorRed(30, 150, 50);
+
         if(Constants.intake.intakeSensor.getVoltage()<.5) {
             triggered = true;
         }
-        // start the timer at 0, hopefuly
-        timer.start();
-        intake.run();
-        // while time is NOT 5 run intake
-        while(true){
-            if(timer.hasElapsed(5)){
-                intake.stop();
-                break;
-            }
+        if(triggered == true) {
+            elapsed++;
         }
-        //stop the timer and reset
-        timer.stop();
-        timer.reset();
+        if(triggered) {
+            isFinished = true;
+            elapsed = 0;
+            Constants.hasNote = true;
+            lights.setColorGreen(30, 150, 50);
+        }
         
     }
     @Override
